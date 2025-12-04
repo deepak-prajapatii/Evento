@@ -28,14 +28,4 @@ fun Event.toDto(): EventDto =
 
 
 fun List<EventDto>.toDomainList(): List<Event> =
-    map { dto ->
-        Event(
-            slotId = dto.slotId,
-            name = dto.name,
-            startTime = dto.startTime,
-            endTime = dto.endTime,
-            customerName = dto.customerName,
-            contactNumber = dto.contactNumber,
-            date = dto.date
-        )
-    }
+    map { it.toDomain() }

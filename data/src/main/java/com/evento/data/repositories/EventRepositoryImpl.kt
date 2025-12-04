@@ -27,7 +27,12 @@ class EventRepositoryImpl @Inject constructor(
 
     override fun getAvailableSlots(): Flow<Either<List<TimeSlot>>> {
         return flow {
-
+            val response = safeApiCall { eventService.getAvailableSlots() }
+            if (response is Either.Success){
+                emit(Either.success(response.data.toDomainList()))
+            } else if(response is Either.Failure) {
+                emit(Either.failure(response.exception))
+            }
         }
     }
 

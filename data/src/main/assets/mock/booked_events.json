@@ -13,38 +13,20 @@
     },
     {
       "slotId": "SLOT002",
-      "name": "Morning Slot",
-      "startTime": "09:00",
-      "endTime": "10:00",
-      "customerName": "Deepak",
-      "contactNumber": "9821334206",
+      "name": "Late Morning Slot",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "customerName": "Prashant",
+      "contactNumber": "8889786787",
       "date": 1765159876000
     },
     {
       "slotId": "SLOT0602",
-      "name": "Morning Slot",
-      "startTime": "09:00",
-      "endTime": "10:00",
-      "customerName": "Deepak",
-      "contactNumber": "9821334206",
-      "date": 1765159876000
-    },
-    {
-      "slotId": "SLOT06",
-      "name": "Morning Slot",
-      "startTime": "09:00",
-      "endTime": "10:00",
-      "customerName": "Deepak",
-      "contactNumber": "9821334206",
-      "date": 1765159876000
-    },
-    {
-      "slotId": "SLOT023",
-      "name": "Morning Slot",
-      "startTime": "09:00",
-      "endTime": "10:00",
-      "customerName": "Deepak",
-      "contactNumber": "9821334206",
+      "name": "Evening Slot",
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "customerName": "Harshit",
+      "contactNumber": "7878636367",
       "date": 1765159876000
     }
   ]

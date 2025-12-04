@@ -14,6 +14,8 @@ import javax.inject.Inject
 class MockApiInterceptor @Inject constructor(
     @ApplicationContext private val context: Context
 ): Interceptor{
+    private val mockDelayMs = 800L
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val path = request.url.encodedPath
@@ -36,6 +38,7 @@ class MockApiInterceptor @Inject constructor(
         }
 
         return if (fileName != null) {
+            Thread.sleep(mockDelayMs)
             val json = loadJsonFromAssets(fileName)
             buildMockResponse(chain, json)
         } else {

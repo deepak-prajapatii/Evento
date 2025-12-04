@@ -20,12 +20,13 @@ class EventBookingViewModel @Inject constructor(
 
     private fun getBookedEvents() {
         viewModelScope.launch {
+            updateState { state -> state.copy(isLoading = true) }
             getBookedEventsUseCase.execute(Unit)
                 .collect { either ->
                     either.onSuccess {
-                        updateState { state -> state.copy(bookedEvents = it) }
+                        updateState { state -> state.copy(bookedEvents = it, isLoading = false) }
                     }.onFailure {
-
+                        updateState { state -> state.copy(isLoading = false) }
                     }
                 }
         }

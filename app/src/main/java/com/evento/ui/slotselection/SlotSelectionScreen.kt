@@ -38,76 +38,104 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.TimeSlot
+import com.evento.ui.components.EventsLoadingOverlay
+import com.evento.ui.eventbooking.EventBookingViewModel
 
 @Composable
 fun SlotSelectionScreen(
-    onBackClick: () -> Unit, onContinueClick: () -> Unit
+    onBackClick: () -> Unit,
+    onContinueClick: () -> Unit,
+    viewModel: SlotSelectionViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsState()
     val colorScheme = MaterialTheme.colorScheme
 
-    val slots = listOf(
-        TimeSlot("1", "Morning Slot", "09:00", "10:00"),
-        TimeSlot("2", "Late Morning Slot", "10:00", "11:00"),
-        TimeSlot("3", "Afternoon Slot", "14:00", "15:00"),
-        TimeSlot("4", "Evening Slot", "16:00", "17:00"),
-    )
-
-    Scaffold(containerColor = colorScheme.background, topBar = {
-        SelectTimeSlotTopBar(onBackClick = onBackClick)
-    }, bottomBar = {
-        SelectTimeSlotBottomBar(
-            enabled = true, onClick = onContinueClick
-        )
-    }) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
-        ) {
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "${slots.size} slots available",
-                style = MaterialTheme.typography.bodyMedium,
-                color = colorScheme.onSurfaceVariant
+    Scaffold(
+        containerColor = colorScheme.background,
+        topBar = { SelectTimeSlotTopBar(onBackClick = onBackClick) },
+        bottomBar = {
+            SelectTimeSlotBottomBar(
+                enabled = state.selectedTimeSlot != null,
+                onClick = onContinueClick
             )
+        }
+    ) { innerPadding ->
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 16.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
             ) {
-                items(slots, key = { it.slotId }) { slot ->
-                    TimeSlotGridItem(
-                        slot = slot, selected = true, onClick = { })
+                Spacer(modifier = Modifier.height(12.dp))
+
+                if (state.timeSlots.isNotEmpty()){
+                    Text(
+                        text = "${state.timeSlots.size} slots available",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(bottom = 16.dp)
+                ) {
+                    items(state.timeSlots, key = { it.slotId }) { slot ->
+                        TimeSlotGridItem(
+                            slot = slot,
+                            selected = state.selectedTimeSlot?.slotId == slot.slotId,
+                            onClick = { viewModel.onSlotSelected(slot) }
+                        )
+                    }
+                }
+            }
+
+            if (state.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    EventsLoadingOverlay()
                 }
             }
         }
     }
 }
 
+
 @Composable
 private fun TimeSlotGridItem(
-    slot: TimeSlot, selected: Boolean, onClick: () -> Unit
+    slot: TimeSlot,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val configuration = LocalConfiguration.current
     val isSmallScreen = configuration.screenWidthDp < 360
 
     val borderColor = if (selected) colorScheme.primary else colorScheme.outline
-    val radioColor = if (selected) colorScheme.primary else colorScheme.outline
 
     Card(
         modifier = Modifier
@@ -128,31 +156,27 @@ private fun TimeSlotGridItem(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = slot.name,
-                    style = if (isSmallScreen) MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold)
-                    else MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    style = if (isSmallScreen)
+                        MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold)
+                    else
+                        MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
-                )
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                RadioButton(
-                    selected = selected, onClick = onClick, colors = RadioButtonDefaults.colors(
-                        selectedColor = radioColor, unselectedColor = radioColor
-                    )
                 )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Outlined.AccessTime,
@@ -172,6 +196,7 @@ private fun TimeSlotGridItem(
         }
     }
 }
+
 
 
 @Composable

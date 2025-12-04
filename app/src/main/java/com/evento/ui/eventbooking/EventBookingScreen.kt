@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.Event
+import com.evento.ui.components.EventsLoadingOverlay
 import com.evento.utils.DateUtils
 
 @Composable
@@ -53,58 +54,76 @@ fun EventBookingScreen(
     onAddEventClick: () -> Unit,
     viewModel: EventBookingViewModel = hiltViewModel()
 ) {
-
     val state by viewModel.state.collectAsState()
+    val colorScheme = MaterialTheme.colorScheme
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = colorScheme.background,
         floatingActionButton = {
             EventsFab(onAddEventClick)
         }
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            EventsHeader()
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                EventsHeader(state.bookedEvents.size)
 
-            if (state.bookedEvents.isEmpty()){
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    EmptyEventsState()
-                }
-            } else {
-                /// BOOKINGS LIST
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item {
-                        Text(
-                            text = "YOUR BOOKINGS",
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
+                if (state.isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        EventsLoadingOverlay()
                     }
+                    return@Column
+                }
 
-                    items(state.bookedEvents, key = { it.slotId }) { event ->
-                        BookingCard(event = event)
+                if (state.bookedEvents.isEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        EmptyEventsState()
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp, vertical = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        item {
+                            Text(
+                                text = "YOUR BOOKINGS",
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.SemiBold
+                                ),
+                                color = colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(bottom = 6.dp)
+                            )
+                        }
+
+                        items(state.bookedEvents, key = { it.slotId }) { event ->
+                            BookingCard(event = event)
+                        }
                     }
                 }
             }
-
         }
     }
 }
 
+
 @Composable
-private fun EventsHeader() {
+private fun EventsHeader(
+    totalEvent: Int
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -142,11 +161,14 @@ private fun EventsHeader() {
 
                 Spacer(modifier = Modifier.height(2.dp))
 
-                Text(
-                    text = "0 events booked",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                if (totalEvent > 0){
+                    Text(
+                        text = "$totalEvent events booked",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
             }
         }
 
@@ -165,7 +187,6 @@ private fun EmptyEventsState() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Faded circle with calendar icon
         Surface(
             modifier = Modifier.size(110.dp),
             shape = CircleShape,
