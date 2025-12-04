@@ -14,7 +14,6 @@ class EventBookingViewModel @Inject constructor(
 ) : BaseViewModel<EventBookingUIState, EventBookingUIEvent>(initialState = EventBookingUIState()) {
 
     init {
-        Log.d("EventVM", "init called")
         getBookedEvents()
     }
 

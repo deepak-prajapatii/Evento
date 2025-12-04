@@ -10,7 +10,7 @@ fun EventDto.toDomain(): Event =
         startTime = startTime,
         endTime = endTime,
         customerName = customerName,
-        contactNumber = contactNumber,
+        phoneNumber = phoneNumber,
         date = date
     )
 
@@ -22,7 +22,7 @@ fun Event.toDto(): EventDto =
         startTime = startTime,
         endTime = endTime,
         customerName = customerName,
-        contactNumber = contactNumber,
+        phoneNumber = phoneNumber,
         date = date
     )
 

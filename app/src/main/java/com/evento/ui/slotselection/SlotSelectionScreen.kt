@@ -48,13 +48,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.TimeSlot
+import com.evento.ui.components.ErrorDialog
 import com.evento.ui.components.EventsLoadingOverlay
+import com.evento.ui.components.SuccessDialog
 import com.evento.ui.eventbooking.EventBookingViewModel
 
 @Composable
 fun SlotSelectionScreen(
     onBackClick: () -> Unit,
-    onContinueClick: () -> Unit,
+    onContinueClick: (String, String, String, String) -> Unit,
     viewModel: SlotSelectionViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -62,29 +64,33 @@ fun SlotSelectionScreen(
 
     Scaffold(
         containerColor = colorScheme.background,
-        topBar = { SelectTimeSlotTopBar(onBackClick = onBackClick) },
+        topBar = { SelectTimeSlotTopBar(onBackClick) },
         bottomBar = {
             SelectTimeSlotBottomBar(
                 enabled = state.selectedTimeSlot != null,
-                onClick = onContinueClick
+                onClick = {
+                    onContinueClick(
+                        state.selectedTimeSlot!!.slotId,
+                        state.selectedTimeSlot!!.name,
+                        state.selectedTimeSlot!!.startTime,
+                        state.selectedTimeSlot!!.endTime
+                    )
+                }
             )
         }
     ) { innerPadding ->
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(innerPadding)
                     .padding(horizontal = 24.dp)
             ) {
                 Spacer(modifier = Modifier.height(12.dp))
 
-                if (state.timeSlots.isNotEmpty()){
+                if (state.timeSlots.isNotEmpty()) {
                     Text(
                         text = "${state.timeSlots.size} slots available",
                         style = MaterialTheme.typography.bodyMedium,
@@ -112,13 +118,7 @@ fun SlotSelectionScreen(
             }
 
             if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    EventsLoadingOverlay()
-                }
+                EventsLoadingOverlay()
             }
         }
     }

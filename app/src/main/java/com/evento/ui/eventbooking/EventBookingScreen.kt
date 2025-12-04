@@ -300,7 +300,7 @@ private fun BookingCard(event: Event) {
 
             BookingDetailRow(
                 icon = Icons.Outlined.Phone,
-                value = event.contactNumber
+                value = event.phoneNumber
             )
 
             Spacer(modifier = Modifier.height(10.dp))

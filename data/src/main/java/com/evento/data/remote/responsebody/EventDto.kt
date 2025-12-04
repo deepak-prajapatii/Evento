@@ -6,6 +6,6 @@ data class EventDto(
     val startTime: String,
     val endTime: String,
     val customerName: String,
-    val contactNumber: String,
+    val phoneNumber: String,
     val date: Long
 )

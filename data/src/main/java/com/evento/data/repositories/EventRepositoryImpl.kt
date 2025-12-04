@@ -1,5 +1,6 @@
 package com.evento.data.repositories
 
+import com.evento.data.remote.mappers.toDomain
 import com.evento.data.remote.mappers.toDomainList
 import com.evento.data.remote.service.EventService
 import com.evento.domain.base.Either
@@ -38,7 +39,12 @@ class EventRepositoryImpl @Inject constructor(
 
     override fun createEvent(createEvent: CreateEvent): Flow<Either<Event>> {
         return flow {
-
+            val response = safeApiCall { eventService.createEvent(createEvent) }
+            if (response is Either.Success){
+                emit(Either.success(response.data.toDomain()))
+            } else if(response is Either.Failure){
+                emit(Either.failure(response.exception))
+            }
         }
     }
 }

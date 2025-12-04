@@ -5,6 +5,9 @@
     "slotId": "SLOT001",
     "name": "Morning Slot",
     "startTime": "09:00",
-    "endTime": "10:00"
+    "endTime": "10:00",
+    "customerName": "Deepak",
+    "phoneNumber": "9821334206",
+    "date": 1765159876000
   }
 }

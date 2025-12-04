@@ -16,6 +16,7 @@ data class GlobalException(
         NETWORK_ERROR,
         TIMEOUT_ERROR,
         HTTP_ERROR,
+        EMPTY_DATA,
         UNKNOWN
     }
 }

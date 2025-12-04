@@ -1,4 +1,7 @@
 package com.evento.domain.requestbody
 
-class CreateEvent {
-}
+class CreateEvent(
+    val customerName: String,
+    val phoneNumber: String,
+    val slotId: String
+)

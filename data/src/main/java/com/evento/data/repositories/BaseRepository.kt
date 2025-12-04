@@ -21,32 +21,44 @@ abstract class BaseRepository {
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body == null) {
-                    Either.failure(
+                    return Either.failure(
                         GlobalException(
                             code = response.code(),
                             messageText = "Empty response from server",
                             type = GlobalException.ErrorType.API_ERROR
                         )
                     )
-                } else {
-                    if (body.status.equals("success", ignoreCase = true)) {
-                        Either.success(body.data)
-                    } else {
-                        Either.failure(
-                            GlobalException(
-                                code = response.code(),
-                                messageText = body.message.ifBlank { "Something went wrong" },
-                                type = GlobalException.ErrorType.API_ERROR
-                            )
+                }
+
+                if (!body.status.equals("success", ignoreCase = true)) {
+                    return Either.failure(
+                        GlobalException(
+                            code = response.code(),
+                            messageText = body.message.ifBlank { "Something went wrong" },
+                            type = GlobalException.ErrorType.API_ERROR
                         )
-                    }
+                    )
+                }
+
+                // 🔥 handle nullable data safely
+                val data = body.data
+                return if (data != null) {
+                    Either.success(data)
+                } else {
+                    Either.failure(
+                        GlobalException(
+                            code = response.code(),
+                            messageText = body.message.ifBlank { "No data available" },
+                            type = GlobalException.ErrorType.EMPTY_DATA
+                        )
+                    )
                 }
             } else {
                 val errorMsg = response.errorBody()?.string()
                     ?.takeIf { it.isNotBlank() }
                     ?: response.message().ifBlank { "HTTP ${response.code()}" }
 
-                Either.failure(
+                return Either.failure(
                     GlobalException(
                         code = response.code(),
                         messageText = errorMsg,
@@ -71,7 +83,6 @@ abstract class BaseRepository {
                 )
             )
         } catch (e: IOException) {
-            e.printStackTrace()
             Either.failure(
                 GlobalException(
                     messageText = "Network error, please try again",
@@ -80,12 +91,10 @@ abstract class BaseRepository {
                 )
             )
         } catch (e: HttpException) {
-            val code = e.code()
-            val msg = e.message()
             Either.failure(
                 GlobalException(
-                    code = code,
-                    messageText = msg.ifBlank { "HTTP $code error" },
+                    code = e.code(),
+                    messageText = e.message().ifBlank { "HTTP ${e.code()} error" },
                     cause = e,
                     type = GlobalException.ErrorType.HTTP_ERROR
                 )

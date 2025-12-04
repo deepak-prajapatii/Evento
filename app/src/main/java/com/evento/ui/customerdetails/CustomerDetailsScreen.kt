@@ -36,25 +36,42 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.TimeSlot
+import com.evento.ui.components.EventsLoadingOverlay
+import com.evento.utils.AppConstants
 
 
 @Composable
 fun CustomerDetailsScreen(
     onBackClick: () -> Unit,
-    onBookClick: () -> Unit,
+    navigateToEventBooking: () -> Unit,
     viewModel: CustomerDetailsViewModel  = hiltViewModel()
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.event.collect { event ->
+            when (event) {
+                CustomerDetailsUIEvent.NavigateToEventBooking -> navigateToEventBooking()
+            }
+        }
+    }
 
     Scaffold(
         containerColor = colorScheme.background,
@@ -62,49 +79,67 @@ fun CustomerDetailsScreen(
         bottomBar = {
             CustomerDetailsBottomBar(
                 enabled = true,
-                onClick = onBookClick
+                onClick = viewModel::bookEvent
             )
         }
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
-                .padding(innerPadding)
                 .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp, vertical = 16.dp)
+                .padding(innerPadding)
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = 24.dp, vertical = 16.dp)
+            ) {
+                SelectedSlotCard(selectedSlot = state.timeSlot)
 
-            val slot = TimeSlot("1", "Morning Slot", "09:00", "10:00")
-            SelectedSlotCard(selectedSlot = slot)
+                Spacer(modifier = Modifier.height(24.dp))
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Customer name
-            RequiredFieldLabel(text = "Customer Name")
-            Spacer(modifier = Modifier.height(8.dp))
-            RoundedTextField(
-                value = "",
-                onValueChange = {  },
-                placeholder = "Enter your full name",
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    capitalization = KeyboardCapitalization.Words
+                RequiredFieldLabel(text = "Customer Name")
+                Spacer(modifier = Modifier.height(8.dp))
+                InputField(
+                    value = state.customerName,
+                    onValueChange = viewModel::updateCustomerName,
+                    placeholder = "Enter your full name",
+                    error = state.nameError,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        capitalization = KeyboardCapitalization.Words
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            RequiredFieldLabel(text = "Phone Number")
-            Spacer(modifier = Modifier.height(8.dp))
-            RoundedTextField(
-                value = "",
-                onValueChange = {},
-                placeholder = "Enter 10-digit phone number",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Phone
+                RequiredFieldLabel(text = "Phone Number")
+                Spacer(modifier = Modifier.height(8.dp))
+                InputField(
+                    value = state.phoneNumber,
+                    onValueChange = { newValue ->
+                        val digitsOnly = newValue.filter { it.isDigit() }
+
+                        if (digitsOnly.length <= AppConstants.MAX_PHONE_NUMBER_LENGTH) {
+                            viewModel.updatePhoneNumber(digitsOnly)
+
+                            if (digitsOnly.length == AppConstants.MAX_PHONE_NUMBER_LENGTH) {
+                                keyboardController?.hide()
+                            }
+                        }
+                    },
+                    placeholder = "Enter 10-digit phone number",
+                    error = state.phoneError,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+
+            if (state.isLoading) {
+                EventsLoadingOverlay()
+            }
         }
     }
 }
@@ -201,7 +236,7 @@ private fun CustomerDetailsBottomBar(
 }
 
 @Composable
-private fun SelectedSlotCard(selectedSlot: TimeSlot) {
+private fun SelectedSlotCard(selectedSlot: TimeSlot?) {
     val colorScheme = MaterialTheme.colorScheme
 
     Card(
@@ -246,7 +281,7 @@ private fun SelectedSlotCard(selectedSlot: TimeSlot) {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = selectedSlot.name,
+                    text = selectedSlot?.name ?: "",
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold
                     ),
@@ -254,7 +289,7 @@ private fun SelectedSlotCard(selectedSlot: TimeSlot) {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "${selectedSlot.startTime} - ${selectedSlot.endTime}",
+                    text = "${selectedSlot?.startTime} - ${selectedSlot?.endTime}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.primary
                 )
@@ -282,10 +317,11 @@ private fun RequiredFieldLabel(text: String) {
 
 
 @Composable
-private fun RoundedTextField(
+private fun InputField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
+    error: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     val colorScheme = MaterialTheme.colorScheme
@@ -293,6 +329,7 @@ private fun RoundedTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
+        isError = error != null,
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 54.dp),
@@ -303,13 +340,21 @@ private fun RoundedTextField(
                 color = colorScheme.onSurfaceVariant
             )
         },
+        supportingText = {
+            if (error != null) {
+                Text(
+                    text = error,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
         shape = RoundedCornerShape(18.dp),
         singleLine = true,
         keyboardOptions = keyboardOptions,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = colorScheme.outline,
-            unfocusedBorderColor = colorScheme.outline.copy(alpha = 0.7f),
-            disabledBorderColor = colorScheme.outline.copy(alpha = 0.4f),
+            focusedBorderColor = if (error != null) colorScheme.error else colorScheme.outline,
+            unfocusedBorderColor = if (error != null) colorScheme.error else colorScheme.outline.copy(alpha = 0.7f),
             cursorColor = colorScheme.primary,
             focusedContainerColor = colorScheme.surface,
             unfocusedContainerColor = colorScheme.surface,
@@ -319,3 +364,4 @@ private fun RoundedTextField(
         )
     )
 }
+
