@@ -1,7 +1,21 @@
 package com.evento.domain.base
 
-sealed class GlobalException(message: String): Exception(message) {
-    data class Network(val msg: String) : GlobalException(msg)
-    data class Http(val code: Int, val msg: String) : GlobalException(msg)
-    data class Unknown(val msg: String) : GlobalException(msg)
+/**
+ * A unified error model for handling all failures coming from API/network/repository layers.
+ */
+data class GlobalException(
+    val code: Int? = null,
+    val messageText: String,
+    override val cause: Throwable? = null,
+    val details: Map<String, Any>? = null,
+    val type: ErrorType = ErrorType.UNKNOWN
+) : Exception(messageText, cause) {
+
+    enum class ErrorType {
+        API_ERROR,
+        NETWORK_ERROR,
+        TIMEOUT_ERROR,
+        HTTP_ERROR,
+        UNKNOWN
+    }
 }

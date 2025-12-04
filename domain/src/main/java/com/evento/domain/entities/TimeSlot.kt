@@ -1,4 +1,4 @@
-package com.evento.domain.model
+package com.evento.domain.entities
 
 class TimeSlot(
     val slotId: String = "",

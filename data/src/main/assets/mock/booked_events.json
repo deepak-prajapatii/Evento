@@ -1,0 +1,51 @@
+{
+  "status": "success",
+  "message": "Get booked events fetched successfully",
+  "data": [
+    {
+      "slotId": "SLOT001",
+      "name": "Morning Slot",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "customerName": "Deepak",
+      "contactNumber": "9821334206",
+      "date": 1765159876000
+    },
+    {
+      "slotId": "SLOT002",
+      "name": "Morning Slot",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "customerName": "Deepak",
+      "contactNumber": "9821334206",
+      "date": 1765159876000
+    },
+    {
+      "slotId": "SLOT0602",
+      "name": "Morning Slot",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "customerName": "Deepak",
+      "contactNumber": "9821334206",
+      "date": 1765159876000
+    },
+    {
+      "slotId": "SLOT06",
+      "name": "Morning Slot",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "customerName": "Deepak",
+      "contactNumber": "9821334206",
+      "date": 1765159876000
+    },
+    {
+      "slotId": "SLOT023",
+      "name": "Morning Slot",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "customerName": "Deepak",
+      "contactNumber": "9821334206",
+      "date": 1765159876000
+    }
+  ]
+}

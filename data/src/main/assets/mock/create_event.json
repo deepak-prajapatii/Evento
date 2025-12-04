@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "message": "Event created successfully",
+  "data": {
+    "slotId": "SLOT001",
+    "name": "Morning Slot",
+    "startTime": "09:00",
+    "endTime": "10:00"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "status": "success",
+  "message": "Available slots fetched successfully",
+  "data": [
+    {
+      "slotId": "SLOT001",
+      "name": "Morning Slot",
+      "startTime": "09:00",
+      "endTime": "10:00"
+    },
+    {
+      "slotId": "SLOT002",
+      "name": "Late Morning Slot",
+      "startTime": "10:00",
+      "endTime": "11:00"
+    },
+    {
+      "slotId": "SLOT003",
+      "name": "Afternoon Slot",
+      "startTime": "14:00",
+      "endTime": "15:00"
+    },
+    {
+      "slotId": "SLOT004",
+      "name": "Evening Slot",
+      "startTime": "16:00",
+      "endTime": "17:00"
+    }
+  ]
+}

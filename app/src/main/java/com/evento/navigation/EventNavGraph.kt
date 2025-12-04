@@ -35,13 +35,19 @@ fun EventNavGraph() {
             }
 
             composable(Screen.SlotSelection.route) {
-                SlotSelectionScreen({}, {
+                SlotSelectionScreen({
+                    navController.navigateUp()
+                }, {
                     navController.navigate(Screen.CustomerDetails.route)
                 })
             }
 
             composable(Screen.CustomerDetails.route) {
-                CustomerDetailsScreen({}, {})
+                CustomerDetailsScreen({
+                    navController.navigateUp()
+                }, {
+
+                })
             }
         }
     }

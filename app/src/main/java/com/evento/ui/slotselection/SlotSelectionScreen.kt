@@ -44,7 +44,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.evento.domain.model.TimeSlot
+import com.evento.domain.entities.TimeSlot
 
 @Composable
 fun SlotSelectionScreen(
