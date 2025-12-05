@@ -40,14 +40,4 @@ Typical technologies used in this project
 ## Testing
 Unit tests are organized by module under src/test and src/androidTest.
 
-Common test commands:
-- Run all JVM unit tests:
-  ./gradlew test
-- Run debug unit tests:
-  ./gradlew testDebugUnitTest
-- Run instrumentation (connected) tests on a device/emulator:
-  ./gradlew connectedAndroidTest
-- Run Android instrumentation tests for a specific variant:
-  ./gradlew connectedDebugAndroidTest
-
 
