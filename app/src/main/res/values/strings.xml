@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">Evento</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="enter_your_information">Enter your information</string>
+
+    <string name="customer_name">Customer Name</string>
+    <string name="enter_full_name">Enter your full name</string>
+
+    <string name="phone_number">Phone Number</string>
+    <string name="enter_phone_number">Enter 10-digit phone number</string>
+
+    <string name="book_event">Book Event</string>
+
+    <string name="booking_confirmed">Booking confirmed</string>
+    <string name="event_booked_successfully">Your event has been booked successfully.</string>
+
+    <string name="error">Error</string>
+    <string name="ok">OK</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="selected_slot">Selected Slot</string>
+    <string name="error_customer_name_empty">Customer name cannot be empty</string>
+    <string name="error_phone_empty">Phone number cannot be empty</string>
+    <string name="error_phone_invalid">Phone number must be 10 digits</string>
+    <string name="your_bookings">YOUR BOOKINGS</string>
+    <string name="event_booking">Event Booking</string>
+    <string name="total_events_booked">%1$s events booked"</string>
+    <string name="no_events_yet">No events yet</string>
+    <string name="tap_to_book">Tap the + button below to book your first event</string>
+    <string name="no_slots_available">No slots available</string>
+    <string name="try_again">Please try again later.</string>
+    <string name="select_time_slot">Select Time Slot</string>
+    <string name="choose_slot">Choose your preferred slot</string>
+    <string name="continue_btn">Continue</string>
 </resources>

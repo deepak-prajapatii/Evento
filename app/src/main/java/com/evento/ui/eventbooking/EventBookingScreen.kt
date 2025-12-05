@@ -42,12 +42,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.evento.R
 import com.evento.domain.entities.Event
 import com.evento.ui.components.ApiErrorState
 import com.evento.ui.components.EventsLoadingOverlay
@@ -119,7 +121,7 @@ fun EventBookingScreen(
                         ) {
                             item {
                                 Text(
-                                    text = "YOUR BOOKINGS",
+                                    text = stringResource(R.string.your_bookings),
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.SemiBold
                                     ),
@@ -174,7 +176,7 @@ private fun EventsHeader(
 
             Column {
                 Text(
-                    text = "Event Booking",
+                    text = stringResource(R.string.event_booking),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.SemiBold
@@ -185,7 +187,7 @@ private fun EventsHeader(
 
                 if (bookedEvent > 0){
                     Text(
-                        text = "$bookedEvent events booked",
+                        text = stringResource(R.string.total_events_booked, bookedEvent),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -227,7 +229,7 @@ private fun EmptyEventsState() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "No events yet",
+            text = stringResource(R.string.no_events_yet),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.SemiBold
@@ -237,7 +239,7 @@ private fun EmptyEventsState() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Tap the + button below to book your first event",
+            text = stringResource(R.string.tap_to_book),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,

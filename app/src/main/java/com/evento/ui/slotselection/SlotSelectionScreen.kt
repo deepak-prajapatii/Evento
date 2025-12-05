@@ -42,11 +42,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.evento.R
 import com.evento.domain.entities.TimeSlot
 import com.evento.ui.components.ApiErrorState
 import com.evento.ui.components.EventsLoadingOverlay
@@ -168,7 +170,7 @@ private fun NoSlotsAvailableState() {
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "No slots available",
+            text = stringResource(R.string.no_slots_available),
             style = MaterialTheme.typography.titleMedium,
             color = colorScheme.onSurface
         )
@@ -176,7 +178,7 @@ private fun NoSlotsAvailableState() {
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "Please try again later.",
+            text = stringResource(R.string.try_again),
             style = MaterialTheme.typography.bodyMedium,
             color = colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -287,13 +289,13 @@ private fun SelectTimeSlotTopBar(onBackClick: () -> Unit) {
 
             Column {
                 Text(
-                    text = "Select Time Slot", style = MaterialTheme.typography.titleLarge.copy(
+                    text = stringResource(R.string.select_time_slot), style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.SemiBold
                     ), color = colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "Choose your preferred slot",
+                    text = stringResource(R.string.choose_slot),
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.onSurfaceVariant
                 )
@@ -339,7 +341,7 @@ private fun SelectTimeSlotBottomBar(
                 )
             ) {
                 Text(
-                    text = "Continue", style = MaterialTheme.typography.titleMedium
+                    text = stringResource(R.string.continue_btn), style = MaterialTheme.typography.titleMedium
                 )
             }
         }

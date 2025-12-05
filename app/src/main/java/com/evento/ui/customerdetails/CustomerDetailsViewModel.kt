@@ -2,6 +2,7 @@ package com.evento.ui.customerdetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.evento.R
 import com.evento.base.BaseViewModel
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.requestbody.CreateEvent
@@ -19,10 +20,10 @@ class CustomerDetailsViewModel @Inject constructor(
     BaseViewModel<CustomerDetailsUIState, CustomerDetailsUIEvent>(initialState = CustomerDetailsUIState()) {
 
     init {
-        val slotId: String = savedStateHandle["slotId"] ?: ""
-        val slotName: String = savedStateHandle["slotName"] ?: ""
-        val startTime: String = savedStateHandle["startTime"] ?: ""
-        val endTime: String = savedStateHandle["endTime"] ?: ""
+        val slotId: String = savedStateHandle[AppConstants.SLOT_ID] ?: AppConstants.EMPTY
+        val slotName: String = savedStateHandle[AppConstants.SLOT_NAME] ?: AppConstants.EMPTY
+        val startTime: String = savedStateHandle[AppConstants.START_TIME] ?: AppConstants.EMPTY
+        val endTime: String = savedStateHandle[AppConstants.END_TIME] ?: AppConstants.EMPTY
 
         val timeSlot = TimeSlot(
             slotId = slotId,
@@ -45,27 +46,34 @@ class CustomerDetailsViewModel @Inject constructor(
     }
 
     fun bookEvent(){
-        var nameError: String? = null
-        var phoneError: String? = null
+        var nameErrorResId: Int? = null
+        var phoneErrorResId: Int? = null
 
         if (currentState.customerName.isBlank()) {
-            nameError = "Customer name cannot be empty"
+            nameErrorResId = R.string.error_customer_name_empty
         }
 
         if (currentState.phoneNumber.isBlank()) {
-            phoneError = "Phone number cannot be empty"
+            phoneErrorResId = R.string.error_phone_empty
         } else if (currentState.phoneNumber.length < AppConstants.MAX_PHONE_NUMBER_LENGTH) {
-            phoneError = "Phone number must be 10 digits"
+            phoneErrorResId = R.string.error_phone_invalid
         }
 
-        if (nameError != null || phoneError != null) {
+        if (nameErrorResId != null || phoneErrorResId != null) {
             updateState {
                 it.copy(
-                    nameError = nameError,
-                    phoneError = phoneError
+                    nameErrorResId = nameErrorResId,
+                    phoneErrorResId = phoneErrorResId
                 )
             }
             return
+        }
+
+        updateState {
+            it.copy(
+                nameErrorResId = null,
+                phoneErrorResId = null
+            )
         }
 
         val createEvent = CreateEvent(

@@ -33,7 +33,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,11 +46,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.evento.R
 import com.evento.domain.entities.TimeSlot
 import com.evento.ui.components.ErrorDialog
 import com.evento.ui.components.EventsLoadingOverlay
@@ -115,13 +116,13 @@ fun CustomerDetailsScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                RequiredFieldLabel(text = "Customer Name")
+                RequiredFieldLabel(text = stringResource(R.string.customer_name))
                 Spacer(modifier = Modifier.height(8.dp))
                 InputField(
                     value = state.customerName,
                     onValueChange = viewModel::updateCustomerName,
-                    placeholder = "Enter your full name",
-                    error = state.nameError,
+                    placeholder = stringResource(R.string.enter_full_name),
+                    error = state.nameErrorResId?.let { stringResource(it) },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         capitalization = KeyboardCapitalization.Words
                     )
@@ -129,7 +130,7 @@ fun CustomerDetailsScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                RequiredFieldLabel(text = "Phone Number")
+                RequiredFieldLabel(text = stringResource(R.string.phone_number))
                 Spacer(modifier = Modifier.height(8.dp))
                 InputField(
                     value = state.phoneNumber,
@@ -144,8 +145,8 @@ fun CustomerDetailsScreen(
                             }
                         }
                     },
-                    placeholder = "Enter 10-digit phone number",
-                    error = state.phoneError,
+                    placeholder = stringResource(R.string.enter_phone_number),
+                    error = state.phoneErrorResId?.let { stringResource(it) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Phone
                     )
@@ -160,8 +161,8 @@ fun CustomerDetailsScreen(
 
             if (showSuccessDialog){
                 SuccessDialog(
-                    title = "Booking confirmed",
-                    message = "Your event has been booked successfully.",
+                    title = stringResource(R.string.booking_confirmed),
+                    message = stringResource(R.string.event_booked_successfully),
                     onDismissRequest = {},
                     onDoneClick = {
                         showSuccessDialog = false
@@ -219,7 +220,7 @@ private fun CustomerDetailsTopBar(onBackClick: () -> Unit) {
 
             Column {
                 Text(
-                    text = "Customer Details",
+                    text = stringResource(R.string.customer_details),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.SemiBold
                     ),
@@ -227,7 +228,7 @@ private fun CustomerDetailsTopBar(onBackClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "Enter your information",
+                    text = stringResource(R.string.enter_your_information),
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.onSurfaceVariant
                 )
@@ -275,7 +276,7 @@ private fun CustomerDetailsBottomBar(
                 )
             ) {
                 Text(
-                    text = "Book Event",
+                    text = stringResource(R.string.book_event),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -323,7 +324,7 @@ private fun SelectedSlotCard(selectedSlot: TimeSlot?) {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Selected Slot",
+                    text = stringResource(R.string.selected_slot),
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.onSurfaceVariant
                 )
