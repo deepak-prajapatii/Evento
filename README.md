@@ -1,6 +1,11 @@
 # Evento
 
-A concise description of the Evento Android app — a mobile application for event booking. 
+A concise description of the Evento Android app — a mobile application for event booking.
+
+## Preview
+![Screenshot_20251205_164634.png](../../../Desktop/Screenshot_20251205_164634.png)
+![Screenshot_20251205_164628.png](../../../Desktop/Screenshot_20251205_164628.png)
+![img.png](img.png)
 
 ## Tech stack
 Typical technologies used in this project
