@@ -3,9 +3,12 @@
 A concise description of the Evento Android app — a mobile application for event booking.
 
 ## Preview
-![Screenshot_20251205_164634.png](../../../Desktop/Screenshot_20251205_164634.png)
-![Screenshot_20251205_164628.png](../../../Desktop/Screenshot_20251205_164628.png)
-![img.png](img.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8d01e1b6-b54e-4807-a6a4-1c3560a4b1e7" width="300" />
+  <img src="https://github.com/user-attachments/assets/cae1ea44-3443-4ac5-a3bf-42d23437fcb0" width="300" />
+  <img src="https://github.com/user-attachments/assets/28f64367-5b9d-478e-afc2-9d9f03a5d683" width="300" />
+</p>
+
 
 ## Tech stack
 Typical technologies used in this project
