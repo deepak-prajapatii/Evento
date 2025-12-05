@@ -42,10 +42,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.Event
+import com.evento.ui.components.ApiErrorState
 import com.evento.ui.components.EventsLoadingOverlay
 import com.evento.utils.DateUtils
 
@@ -68,49 +70,64 @@ fun EventBookingScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
                 EventsHeader(state.bookedEvents.size)
 
-                if (state.isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        EventsLoadingOverlay()
-                    }
-                    return@Column
-                }
-
-                if (state.bookedEvents.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        EmptyEventsState()
-                    }
-                } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 20.dp, vertical = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        item {
-                            Text(
-                                text = "YOUR BOOKINGS",
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.SemiBold
-                                ),
-                                color = colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = 6.dp)
+                when {
+                    state.uiErrorType != null && state.uiErrorMessage != null -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ApiErrorState(
+                                title = state.uiErrorType!!.name,
+                                message = state.uiErrorMessage!!
                             )
                         }
+                    }
 
-                        items(state.bookedEvents, key = { it.slotId }) { event ->
-                            BookingCard(event = event)
+                    state.isLoading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            EventsLoadingOverlay()
+                        }
+                    }
+
+                    state.bookedEvents.isEmpty() -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            EmptyEventsState()
+                        }
+                    }
+
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 20.dp, vertical = 16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            item {
+                                Text(
+                                    text = "YOUR BOOKINGS",
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.SemiBold
+                                    ),
+                                    color = colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(bottom = 6.dp)
+                                )
+                            }
+
+                            items(state.bookedEvents, key = { it.slotId }) { event ->
+                                BookingCard(event = event)
+                            }
                         }
                     }
                 }
@@ -120,9 +137,11 @@ fun EventBookingScreen(
 }
 
 
+
+
 @Composable
 private fun EventsHeader(
-    totalEvent: Int
+    bookedEvent: Int
 ) {
     Column(
         modifier = Modifier
@@ -161,9 +180,9 @@ private fun EventsHeader(
 
                 Spacer(modifier = Modifier.height(2.dp))
 
-                if (totalEvent > 0){
+                if (bookedEvent > 0){
                     Text(
-                        text = "$totalEvent events booked",
+                        text = "$bookedEvent events booked",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -190,7 +209,7 @@ private fun EmptyEventsState() {
         Surface(
             modifier = Modifier.size(110.dp),
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.15f)
+            color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f)
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Icon(
@@ -202,7 +221,7 @@ private fun EmptyEventsState() {
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = "No events yet",

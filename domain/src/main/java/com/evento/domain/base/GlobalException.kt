@@ -5,18 +5,8 @@ package com.evento.domain.base
  */
 data class GlobalException(
     val code: Int? = null,
-    val messageText: String,
+    val errorMessage: String,
     override val cause: Throwable? = null,
     val details: Map<String, Any>? = null,
     val type: ErrorType = ErrorType.UNKNOWN
-) : Exception(messageText, cause) {
-
-    enum class ErrorType {
-        API_ERROR,
-        NETWORK_ERROR,
-        TIMEOUT_ERROR,
-        HTTP_ERROR,
-        EMPTY_DATA,
-        UNKNOWN
-    }
-}
+) : Exception(errorMessage, cause)

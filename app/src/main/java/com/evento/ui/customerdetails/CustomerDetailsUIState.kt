@@ -1,6 +1,7 @@
 package com.evento.ui.customerdetails
 
 import com.evento.base.UIState
+import com.evento.domain.base.ErrorType
 import com.evento.domain.entities.TimeSlot
 
 data class CustomerDetailsUIState(

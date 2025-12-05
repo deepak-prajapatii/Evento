@@ -25,7 +25,7 @@ class EventBookingViewModel @Inject constructor(
                     either.onSuccess {
                         updateState { state -> state.copy(bookedEvents = it, isLoading = false) }
                     }.onFailure {
-                        updateState { state -> state.copy(isLoading = false) }
+                        updateState { state -> state.copy(isLoading = false, uiErrorType = it.type, uiErrorMessage = it.errorMessage) }
                     }
                 }
         }

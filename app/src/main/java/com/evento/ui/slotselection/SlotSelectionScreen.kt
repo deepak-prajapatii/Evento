@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.EventBusy
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -44,10 +45,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.TimeSlot
+import com.evento.ui.components.ApiErrorState
 import com.evento.ui.components.ErrorDialog
 import com.evento.ui.components.EventsLoadingOverlay
 import com.evento.ui.components.SuccessDialog
@@ -66,17 +69,21 @@ fun SlotSelectionScreen(
         containerColor = colorScheme.background,
         topBar = { SelectTimeSlotTopBar(onBackClick) },
         bottomBar = {
-            SelectTimeSlotBottomBar(
-                enabled = state.selectedTimeSlot != null,
-                onClick = {
-                    onContinueClick(
-                        state.selectedTimeSlot!!.slotId,
-                        state.selectedTimeSlot!!.name,
-                        state.selectedTimeSlot!!.startTime,
-                        state.selectedTimeSlot!!.endTime
-                    )
-                }
-            )
+            if (state.timeSlots.isNotEmpty() && state.uiErrorType == null && state.uiErrorMessage == null) {
+                SelectTimeSlotBottomBar(
+                    enabled = state.selectedTimeSlot != null,
+                    onClick = {
+                        state.selectedTimeSlot?.let { slot ->
+                            onContinueClick(
+                                slot.slotId,
+                                slot.name,
+                                slot.startTime,
+                                slot.endTime
+                            )
+                        }
+                    }
+                )
+            }
         }
     ) { innerPadding ->
 
@@ -90,29 +97,53 @@ fun SlotSelectionScreen(
             ) {
                 Spacer(modifier = Modifier.height(12.dp))
 
-                if (state.timeSlots.isNotEmpty()) {
+                if (state.timeSlots.isNotEmpty() && state.uiErrorType == null && state.uiErrorMessage == null) {
                     Text(
                         text = "${state.timeSlots.size} slots available",
                         style = MaterialTheme.typography.bodyMedium,
                         color = colorScheme.onSurfaceVariant
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                when {
+                    !state.isLoading && state.uiErrorType != null && state.uiErrorMessage != null-> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ApiErrorState(
+                                title = state.uiErrorType!!.name,
+                                message = state.uiErrorMessage!!
+                            )
+                        }
+                    }
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(bottom = 16.dp)
-                ) {
-                    items(state.timeSlots, key = { it.slotId }) { slot ->
-                        TimeSlotGridItem(
-                            slot = slot,
-                            selected = state.selectedTimeSlot?.slotId == slot.slotId,
-                            onClick = { viewModel.onSlotSelected(slot) }
-                        )
+                    !state.isLoading && state.timeSlots.isEmpty() -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NoSlotsAvailableState()
+                        }
+                    }
+
+                    state.timeSlots.isNotEmpty() -> {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            contentPadding = PaddingValues(bottom = 16.dp)
+                        ) {
+                            items(state.timeSlots, key = { it.slotId }) { slot ->
+                                TimeSlotGridItem(
+                                    slot = slot,
+                                    selected = state.selectedTimeSlot?.slotId == slot.slotId,
+                                    onClick = { viewModel.onSlotSelected(slot) }
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -123,6 +154,41 @@ fun SlotSelectionScreen(
         }
     }
 }
+
+
+@Composable
+private fun NoSlotsAvailableState() {
+    val colorScheme = MaterialTheme.colorScheme
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.EventBusy,
+            contentDescription = null,
+            tint = colorScheme.primary.copy(alpha = 0.8f),
+            modifier = Modifier.size(40.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "No slots available",
+            style = MaterialTheme.typography.titleMedium,
+            color = colorScheme.onSurface
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = "Please try again later.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
 
 
 @Composable

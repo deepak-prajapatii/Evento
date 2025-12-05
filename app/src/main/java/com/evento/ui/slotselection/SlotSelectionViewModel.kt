@@ -25,7 +25,7 @@ class SlotSelectionViewModel @Inject constructor(
                     either.onSuccess { timeSlots ->
                         updateState { state -> state.copy(isLoading = false, timeSlots = timeSlots) }
                     }.onFailure {
-                        updateState { state -> state.copy(isLoading = false) }
+                        updateState { state -> state.copy(isLoading = false, uiErrorType = it.type, uiErrorMessage = it.errorMessage) }
                     }
                 }
         }

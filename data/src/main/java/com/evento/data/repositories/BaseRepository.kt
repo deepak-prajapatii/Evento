@@ -2,6 +2,7 @@ package com.evento.data.repositories
 
 import com.evento.data.remote.responsebody.BaseResponseDto
 import com.evento.domain.base.Either
+import com.evento.domain.base.ErrorType
 import com.evento.domain.base.GlobalException
 import retrofit2.Response
 
@@ -24,8 +25,8 @@ abstract class BaseRepository {
                     return Either.failure(
                         GlobalException(
                             code = response.code(),
-                            messageText = "Empty response from server",
-                            type = GlobalException.ErrorType.API_ERROR
+                            errorMessage = "Empty response from server",
+                            type = ErrorType.API_ERROR
                         )
                     )
                 }
@@ -34,13 +35,12 @@ abstract class BaseRepository {
                     return Either.failure(
                         GlobalException(
                             code = response.code(),
-                            messageText = body.message.ifBlank { "Something went wrong" },
-                            type = GlobalException.ErrorType.API_ERROR
+                            errorMessage = body.message.ifBlank { "Something went wrong" },
+                            type = ErrorType.API_ERROR
                         )
                     )
                 }
 
-                // 🔥 handle nullable data safely
                 val data = body.data
                 return if (data != null) {
                     Either.success(data)
@@ -48,8 +48,8 @@ abstract class BaseRepository {
                     Either.failure(
                         GlobalException(
                             code = response.code(),
-                            messageText = body.message.ifBlank { "No data available" },
-                            type = GlobalException.ErrorType.EMPTY_DATA
+                            errorMessage = body.message.ifBlank { "No data available" },
+                            type = ErrorType.EMPTY_DATA
                         )
                     )
                 }
@@ -61,50 +61,50 @@ abstract class BaseRepository {
                 return Either.failure(
                     GlobalException(
                         code = response.code(),
-                        messageText = errorMsg,
-                        type = GlobalException.ErrorType.HTTP_ERROR
+                        errorMessage = errorMsg,
+                        type = ErrorType.HTTP_ERROR
                     )
                 )
             }
         } catch (e: UnknownHostException) {
             Either.failure(
                 GlobalException(
-                    messageText = "Please check your internet connection",
+                    errorMessage = "Please check your internet connection",
                     cause = e,
-                    type = GlobalException.ErrorType.NETWORK_ERROR
+                    type = ErrorType.NETWORK_ERROR
                 )
             )
         } catch (e: SocketTimeoutException) {
             Either.failure(
                 GlobalException(
-                    messageText = "Request timed out, please try again",
+                    errorMessage = "Request timed out, please try again",
                     cause = e,
-                    type = GlobalException.ErrorType.TIMEOUT_ERROR
+                    type = ErrorType.TIMEOUT_ERROR
                 )
             )
         } catch (e: IOException) {
             Either.failure(
                 GlobalException(
-                    messageText = "Network error, please try again",
+                    errorMessage = "Network error, please try again",
                     cause = e,
-                    type = GlobalException.ErrorType.NETWORK_ERROR
+                    type = ErrorType.NETWORK_ERROR
                 )
             )
         } catch (e: HttpException) {
             Either.failure(
                 GlobalException(
                     code = e.code(),
-                    messageText = e.message().ifBlank { "HTTP ${e.code()} error" },
+                    errorMessage = e.message().ifBlank { "HTTP ${e.code()} error" },
                     cause = e,
-                    type = GlobalException.ErrorType.HTTP_ERROR
+                    type = ErrorType.HTTP_ERROR
                 )
             )
         } catch (e: Exception) {
             Either.failure(
                 GlobalException(
-                    messageText = e.message ?: "Something went wrong",
+                    errorMessage = e.message ?: "Something went wrong",
                     cause = e,
-                    type = GlobalException.ErrorType.UNKNOWN
+                    type = ErrorType.UNKNOWN
                 )
             )
         }
