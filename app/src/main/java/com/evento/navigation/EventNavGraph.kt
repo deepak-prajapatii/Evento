@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,6 +14,7 @@ import com.evento.screen.Screen
 import com.evento.ui.customerdetails.CustomerDetailsScreen
 import com.evento.ui.eventbooking.EventBookingScreen
 import com.evento.ui.slotselection.SlotSelectionScreen
+import com.evento.utils.AppConstants
 
 
 const val NAV_HOST_ROUTE = "main-route"
@@ -47,17 +49,19 @@ fun EventNavGraph() {
 
             composable(Screen.CustomerDetails.route,
                 arguments = listOf(
-                    navArgument("slotId") { type = NavType.StringType },
-                    navArgument("slotName") { type = NavType.StringType },
-                    navArgument("startTime") { type = NavType.StringType },
-                    navArgument("endTime") { type = NavType.StringType },
+                    navArgument(AppConstants.SLOT_ID) { type = NavType.StringType },
+                    navArgument(AppConstants.SLOT_NAME) { type = NavType.StringType },
+                    navArgument(AppConstants.START_TIME) { type = NavType.StringType },
+                    navArgument(AppConstants.END_TIME) { type = NavType.StringType },
                 )) {
                 CustomerDetailsScreen(onBackClick = {
                     navController.navigateUp()
                 },
                     navigateToEventBooking = {
                         navController.navigate(Screen.Home.route) {
-                            popUpTo(0)
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
+                            }
                             launchSingleTop = true
                         }
                     })
