@@ -59,5 +59,8 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.gson.lib)
 
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+
     implementation(project(":domain"))
 }

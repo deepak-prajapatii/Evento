@@ -15,17 +15,5 @@ fun EventDto.toDomain(): Event =
     )
 
 
-fun Event.toDto(): EventDto =
-    EventDto(
-        slotId = slotId,
-        name = name,
-        startTime = startTime,
-        endTime = endTime,
-        customerName = customerName,
-        phoneNumber = phoneNumber,
-        date = date
-    )
-
-
 fun List<EventDto>.toDomainList(): List<Event> =
     map { it.toDomain() }

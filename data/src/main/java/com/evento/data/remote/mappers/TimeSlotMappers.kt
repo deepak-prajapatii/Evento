@@ -11,15 +11,6 @@ fun TimeSlotDto.toDomain(): TimeSlot =
         endTime = endTime
     )
 
-
-fun TimeSlot.toDto(): TimeSlotDto =
-    TimeSlotDto(
-        slotId = slotId,
-        name = name,
-        startTime = startTime,
-        endTime = endTime
-    )
-
 fun List<TimeSlotDto>.toDomainList(): List<TimeSlot> =
     map { it.toDomain() }
 
