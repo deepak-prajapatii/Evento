@@ -1,6 +1,6 @@
 {
   "status": "success",
-  "message": "Event created successfully",
+  "message": "Event booked successfully",
   "data": {
     "slotId": "SLOT001",
     "name": "Morning Slot",
