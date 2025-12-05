@@ -10,8 +10,8 @@ data class CustomerDetailsUIState(
     val timeSlot: TimeSlot? = null,
     val customerName: String = "",
     val phoneNumber: String = "",
-    @StringRes val nameErrorResId: Int? = null,
-    @StringRes val phoneErrorResId: Int? = null,
+    val nameError: CustomerFormInputError? = null,
+    val phoneError: CustomerFormInputError? = null,
     val uiErrorTitle: String? = null,
     val uiErrorMessage: String? = null
 ) : UIState

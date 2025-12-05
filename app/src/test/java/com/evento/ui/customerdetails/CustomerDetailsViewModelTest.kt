@@ -113,12 +113,13 @@ class CustomerDetailsViewModelTest {
 
         val state = viewModel.state.value
 
-        assertEquals("Customer name cannot be empty", state.nameError)
-        assertEquals("Phone number cannot be empty", state.phoneError)
+        assertEquals(CustomerFormInputError.EmptyName, state.nameError)
+        assertEquals(CustomerFormInputError.EmptyPhone, state.phoneError)
         assertFalse(state.isLoading)
 
         coVerify(exactly = 0) { bookEventUseCase.execute(any()) }
     }
+
 
     @Test
     fun `bookEvent with short phone should set phone length error`() = runTest(testDispatcher) {
@@ -134,7 +135,7 @@ class CustomerDetailsViewModelTest {
         val state = viewModel.state.value
 
         assertNull(state.nameError)
-        assertEquals("Phone number must be 10 digits", state.phoneError)
+        assertEquals(CustomerFormInputError.InvalidPhone, state.phoneError)
         assertFalse(state.isLoading)
 
         coVerify(exactly = 0) { bookEventUseCase.execute(any()) }
@@ -162,7 +163,6 @@ class CustomerDetailsViewModelTest {
                 val event = awaitItem()
                 assertEquals(CustomerDetailsUIEvent.NavigateToEventBooking, event)
 
-                // Check state
                 val state = viewModel.state.value
                 assertFalse(state.isLoading)
 

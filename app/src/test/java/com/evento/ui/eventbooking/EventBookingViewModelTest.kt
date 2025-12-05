@@ -63,11 +63,9 @@ class EventBookingViewModelTest {
             Either.success(fakeEvents)
         )
 
-        // Act
         val viewModel = EventBookingViewModel(getBookedEventsUseCase)
         advanceUntilIdle()
 
-        // Assert
         val state = viewModel.state.value
 
         assertFalse(state.isLoading)
@@ -104,7 +102,6 @@ class EventBookingViewModelTest {
 
     @Test
     fun `state should become loading before result is emitted`() = runTest(testDispatcher) {
-        // Arrange: delay emission so "loading=true" state can be observed
         coEvery { getBookedEventsUseCase.execute(Unit) } returns flow {
             delay(10) // scheduled later
             emit(Either.success(emptyList()))

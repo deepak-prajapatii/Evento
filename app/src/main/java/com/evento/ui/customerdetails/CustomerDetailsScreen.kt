@@ -122,7 +122,10 @@ fun CustomerDetailsScreen(
                     value = state.customerName,
                     onValueChange = viewModel::updateCustomerName,
                     placeholder = stringResource(R.string.enter_full_name),
-                    error = state.nameErrorResId?.let { stringResource(it) },
+                    error = when (state.nameError) {
+                        CustomerFormInputError.EmptyName -> stringResource(R.string.error_customer_name_empty)
+                        else -> null
+                    },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         capitalization = KeyboardCapitalization.Words
                     )
@@ -146,7 +149,11 @@ fun CustomerDetailsScreen(
                         }
                     },
                     placeholder = stringResource(R.string.enter_phone_number),
-                    error = state.phoneErrorResId?.let { stringResource(it) },
+                    error = when (state.phoneError) {
+                        CustomerFormInputError.EmptyPhone -> stringResource(R.string.error_phone_empty)
+                        CustomerFormInputError.InvalidPhone -> stringResource(R.string.error_phone_invalid)
+                        else -> null
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Phone
                     )

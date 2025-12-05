@@ -46,33 +46,37 @@ class CustomerDetailsViewModel @Inject constructor(
     }
 
     fun bookEvent(){
-        var nameErrorResId: Int? = null
-        var phoneErrorResId: Int? = null
+        var nameError: CustomerFormInputError? = null
+        var phoneError: CustomerFormInputError? = null
 
+        // Validate name
         if (currentState.customerName.isBlank()) {
-            nameErrorResId = R.string.error_customer_name_empty
+            nameError = CustomerFormInputError.EmptyName
         }
 
+        // Validate phone
         if (currentState.phoneNumber.isBlank()) {
-            phoneErrorResId = R.string.error_phone_empty
+            phoneError = CustomerFormInputError.EmptyPhone
         } else if (currentState.phoneNumber.length < AppConstants.MAX_PHONE_NUMBER_LENGTH) {
-            phoneErrorResId = R.string.error_phone_invalid
+            phoneError = CustomerFormInputError.InvalidPhone
         }
 
-        if (nameErrorResId != null || phoneErrorResId != null) {
+        // If any error -> update state with BOTH errors at once and stop
+        if (nameError != null || phoneError != null) {
             updateState {
                 it.copy(
-                    nameErrorResId = nameErrorResId,
-                    phoneErrorResId = phoneErrorResId
+                    nameError = nameError,
+                    phoneError = phoneError
                 )
             }
             return
         }
 
+
         updateState {
             it.copy(
-                nameErrorResId = null,
-                phoneErrorResId = null
+                nameError = null,
+                phoneError = null
             )
         }
 
