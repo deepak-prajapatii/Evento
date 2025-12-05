@@ -77,7 +77,10 @@ dependencies {
     testImplementation(libs.viewmodel.test)
     testImplementation(libs.turbine)
 
+    implementation(libs.navigation.animaiton)
+
     implementation(project(":data"))
     implementation(project(":domain"))
     testImplementation(kotlin("test"))
+
 }
