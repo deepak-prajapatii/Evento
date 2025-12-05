@@ -1,6 +1,7 @@
 # Evento
 
-A concise description of the Evento Android app — a mobile application for event booking.
+A practice-focused Android application built to deeply understand Clean Architecture, MVVM, UI state handling, and Compose UI design patterns — not a real-world production app.
+The backend is fully mocked using an interceptor, allowing real API-like flows
 
 ## Preview
 <p align="center">
