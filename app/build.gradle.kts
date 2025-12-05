@@ -81,6 +81,4 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":domain"))
-    testImplementation(kotlin("test"))
-
 }
