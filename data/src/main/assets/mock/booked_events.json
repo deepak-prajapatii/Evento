@@ -28,6 +28,15 @@
       "customerName": "Harshit",
       "phoneNumber": "7878636367",
       "date": 1765159876000
+    },
+    {
+      "slotId": "SLOT0902",
+      "name": "Evening Slot",
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "customerName": "Shubham",
+      "phoneNumber": "7878636367",
+      "date": 1765159876000
     }
   ]
 }

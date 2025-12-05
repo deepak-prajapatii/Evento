@@ -16,7 +16,6 @@ val InterFontFamily = FontFamily(
 )
 
 val AppTypography = Typography(
-    /* Large Title (AppBar Titles, Main Headers) */
     headlineLarge = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
@@ -24,7 +23,6 @@ val AppTypography = Typography(
         lineHeight = 32.sp
     ),
 
-    /* Feature Heading */
     titleLarge = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
@@ -32,15 +30,13 @@ val AppTypography = Typography(
         lineHeight = 26.sp
     ),
 
-    /* Subsection Title / Card Title */
     titleMedium = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 18.sp,
+        fontSize = 16.sp,
         lineHeight = 24.sp
     ),
 
-    /* Body text (main paragraphs) */
     bodyLarge = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.Normal,
@@ -48,11 +44,10 @@ val AppTypography = Typography(
         lineHeight = 22.sp
     ),
 
-    /* Supporting body text / descriptions */
     bodyMedium = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 12.sp,
         lineHeight = 20.sp
     ),
 
