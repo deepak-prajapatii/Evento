@@ -35,7 +35,7 @@ class BaseRepositoryTest {
         val body = BaseResponseDto(
             status = "error",
             message = "Something failed",
-            data = null as Int?
+            data = null
         )
 
         val result = repo.call { Response.success(body) }
