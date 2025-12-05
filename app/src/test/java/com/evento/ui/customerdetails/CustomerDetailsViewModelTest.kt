@@ -18,9 +18,9 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import androidx.lifecycle.SavedStateHandle
-import com.evento.domain.base.Either
-import com.evento.domain.base.ErrorType
-import com.evento.domain.base.GlobalException
+import com.evento.domain.common.Either
+import com.evento.domain.common.ErrorType
+import com.evento.domain.common.GlobalException
 import com.evento.domain.entities.Event
 
 @OptIn(ExperimentalCoroutinesApi::class)

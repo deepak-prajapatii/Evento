@@ -1,4 +1,4 @@
-package com.evento.domain.base
+package com.evento.domain.common
 
 sealed class Either<out T> {
 

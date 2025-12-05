@@ -1,8 +1,6 @@
 package com.evento.ui.customerdetails
 
-import androidx.annotation.StringRes
-import com.evento.base.UIState
-import com.evento.domain.base.ErrorType
+import com.evento.common.UIState
 import com.evento.domain.entities.TimeSlot
 
 data class CustomerDetailsUIState(

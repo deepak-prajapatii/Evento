@@ -1,6 +1,6 @@
 package com.evento.ui.slotselection
 
-import com.evento.base.UIEvent
+import com.evento.common.UIEvent
 
 class SlotSelectionUIEvent : UIEvent {
 }

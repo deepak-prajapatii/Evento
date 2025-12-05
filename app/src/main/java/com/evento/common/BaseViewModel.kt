@@ -1,4 +1,4 @@
-package com.evento.base
+package com.evento.common
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

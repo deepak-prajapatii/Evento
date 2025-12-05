@@ -4,9 +4,8 @@ import com.evento.data.remote.responsebody.BaseResponseDto
 import com.evento.data.remote.responsebody.EventDto
 import com.evento.data.remote.responsebody.TimeSlotDto
 import com.evento.data.remote.service.EventService
-import com.evento.domain.base.Either
-import com.evento.domain.base.ErrorType
-import com.evento.domain.base.GlobalException
+import com.evento.domain.common.Either
+import com.evento.domain.common.ErrorType
 import com.evento.domain.entities.Event
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.requestbody.CreateEvent

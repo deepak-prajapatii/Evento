@@ -1,6 +1,6 @@
 package com.evento.domain.repositories
 
-import com.evento.domain.base.Either
+import com.evento.domain.common.Either
 import com.evento.domain.entities.Event
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.requestbody.CreateEvent

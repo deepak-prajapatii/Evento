@@ -1,8 +1,8 @@
 package com.evento.data.repositories
 
 import com.evento.data.remote.responsebody.BaseResponseDto
-import com.evento.domain.base.Either
-import com.evento.domain.base.ErrorType
+import com.evento.domain.common.Either
+import com.evento.domain.common.ErrorType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

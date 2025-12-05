@@ -1,9 +1,9 @@
 package com.evento.data.repositories
 
 import com.evento.data.remote.responsebody.BaseResponseDto
-import com.evento.domain.base.Either
-import com.evento.domain.base.ErrorType
-import com.evento.domain.base.GlobalException
+import com.evento.domain.common.Either
+import com.evento.domain.common.ErrorType
+import com.evento.domain.common.GlobalException
 import retrofit2.Response
 
 import retrofit2.HttpException

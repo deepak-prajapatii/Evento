@@ -1,4 +1,4 @@
-package com.evento.base
+package com.evento.common
 
 /**
  * Represents a one-time UI action (event) that should be triggered only once.

@@ -1,8 +1,8 @@
 package com.evento.ui.eventbooking
 
-import com.evento.domain.base.Either
-import com.evento.domain.base.ErrorType
-import com.evento.domain.base.GlobalException
+import com.evento.domain.common.Either
+import com.evento.domain.common.ErrorType
+import com.evento.domain.common.GlobalException
 import com.evento.domain.entities.Event
 import com.evento.domain.usecase.GetBookedEventsUseCase
 import io.mockk.coEvery

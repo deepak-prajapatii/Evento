@@ -1,7 +1,7 @@
 package com.evento.ui.slotselection
 
 import androidx.lifecycle.viewModelScope
-import com.evento.base.BaseViewModel
+import com.evento.common.BaseViewModel
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.usecase.GetAvailableSlotsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

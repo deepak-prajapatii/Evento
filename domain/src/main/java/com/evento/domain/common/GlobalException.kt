@@ -1,4 +1,4 @@
-package com.evento.domain.base
+package com.evento.domain.common
 
 /**
  * A unified error model for handling all failures coming from API/network/repository layers.

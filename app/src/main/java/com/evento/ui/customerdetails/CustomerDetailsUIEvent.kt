@@ -1,6 +1,6 @@
 package com.evento.ui.customerdetails
 
-import com.evento.base.UIEvent
+import com.evento.common.UIEvent
 
 sealed class CustomerDetailsUIEvent : UIEvent {
     object NavigateToEventBooking: CustomerDetailsUIEvent()

@@ -3,7 +3,7 @@ package com.evento.data.repositories
 import com.evento.data.remote.mappers.toDomain
 import com.evento.data.remote.mappers.toDomainList
 import com.evento.data.remote.service.EventService
-import com.evento.domain.base.Either
+import com.evento.domain.common.Either
 import com.evento.domain.entities.Event
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.repositories.EventRepository

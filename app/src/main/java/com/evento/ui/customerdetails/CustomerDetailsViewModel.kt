@@ -2,8 +2,7 @@ package com.evento.ui.customerdetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.evento.R
-import com.evento.base.BaseViewModel
+import com.evento.common.BaseViewModel
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.requestbody.CreateEvent
 import com.evento.domain.usecase.BookEventUseCase

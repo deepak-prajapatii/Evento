@@ -1,6 +1,6 @@
 package com.evento.domain.usecase
 
-import com.evento.domain.base.Either
+import com.evento.domain.common.Either
 import com.evento.domain.entities.Event
 import com.evento.domain.repositories.EventRepository
 import kotlinx.coroutines.flow.Flow

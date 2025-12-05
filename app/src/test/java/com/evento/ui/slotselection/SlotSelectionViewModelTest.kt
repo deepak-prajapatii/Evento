@@ -1,8 +1,8 @@
 package com.evento.ui.slotselection
 
-import com.evento.domain.base.Either
-import com.evento.domain.base.ErrorType
-import com.evento.domain.base.GlobalException
+import com.evento.domain.common.Either
+import com.evento.domain.common.ErrorType
+import com.evento.domain.common.GlobalException
 import com.evento.domain.entities.TimeSlot
 import com.evento.domain.usecase.GetAvailableSlotsUseCase
 import io.mockk.coEvery

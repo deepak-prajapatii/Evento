@@ -1,8 +1,7 @@
 package com.evento.ui.eventbooking
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.evento.base.BaseViewModel
+import com.evento.common.BaseViewModel
 import com.evento.domain.usecase.GetBookedEventsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
