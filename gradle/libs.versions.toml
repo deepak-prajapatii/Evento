@@ -20,7 +20,10 @@ gson = "2.13.1"
 hiltNavigationCompose = "1.2.0"
 navigationCompose = "2.9.3"
 icons-extended = "1.7.8"
-lottie = "6.0.0"
+coroutinesTest = "1.8.1"
+mockk = "1.13.12"
+turbine = "1.1.0"
+viewmodelTest = "2.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -52,7 +55,10 @@ gson-lib = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons-extended" }
-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine"}
+viewmodel-test = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "viewmodelTest"}
 
 
 

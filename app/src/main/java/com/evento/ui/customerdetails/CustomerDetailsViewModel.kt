@@ -81,7 +81,8 @@ class CustomerDetailsViewModel @Inject constructor(
                         updateState { state -> state.copy(isLoading = false) }
                         sendEvent(CustomerDetailsUIEvent.NavigateToEventBooking)
                     }.onFailure {
-                        updateState { state -> state.copy(isLoading = false) }
+                        updateState { state -> state.copy(isLoading = false, uiErrorTitle = it.type.name, uiErrorMessage = it.errorMessage) }
+                        sendEvent(CustomerDetailsUIEvent.CreateEventFailure)
                     }
                 }
         }

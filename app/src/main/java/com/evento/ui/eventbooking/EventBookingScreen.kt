@@ -20,7 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Card
@@ -62,7 +64,8 @@ fun EventBookingScreen(
     Scaffold(
         containerColor = colorScheme.background,
         floatingActionButton = {
-            EventsFab(onAddEventClick)
+            EventsFab(!state.isLoading, onAddEventClick)
+
         }
     ) { innerPadding ->
         Box(
@@ -244,9 +247,9 @@ private fun EmptyEventsState() {
 }
 
 @Composable
-private fun EventsFab(onClick: () -> Unit) {
+private fun EventsFab(enabled: Boolean, onClick: () -> Unit) {
     FloatingActionButton(
-        onClick = onClick,
+        onClick = { if (enabled) onClick() },
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
         shape = CircleShape,
@@ -276,9 +279,7 @@ private fun BookingCard(event: Event) {
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)) {
 
-
             Row(verticalAlignment = Alignment.CenterVertically) {
-
 
                 Box(
                     modifier = Modifier
@@ -309,6 +310,14 @@ private fun BookingCard(event: Event) {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+
+            BookingDetailRow(
+                icon = Icons.Outlined.Badge,
+                value = event.slotId
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             BookingDetailRow(
                 icon = Icons.Outlined.Person,

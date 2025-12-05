@@ -33,12 +33,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,7 +53,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evento.domain.entities.TimeSlot
+import com.evento.ui.components.ErrorDialog
 import com.evento.ui.components.EventsLoadingOverlay
+import com.evento.ui.components.SuccessDialog
 import com.evento.utils.AppConstants
 
 
@@ -62,20 +68,30 @@ fun CustomerDetailsScreen(
     val colorScheme = MaterialTheme.colorScheme
     val scrollState = rememberScrollState()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var showSuccessDialog by remember { mutableStateOf(false) }
+    var showErrorDialog by remember { mutableStateOf(false) }
 
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
             when (event) {
-                CustomerDetailsUIEvent.NavigateToEventBooking -> navigateToEventBooking()
+                CustomerDetailsUIEvent.NavigateToEventBooking -> {
+                    showSuccessDialog = true
+                }
+
+                is CustomerDetailsUIEvent.CreateEventFailure -> {
+                    showErrorDialog = true
+                }
             }
         }
     }
 
     Scaffold(
         containerColor = colorScheme.background,
-        topBar = { CustomerDetailsTopBar(onBackClick) },
+        topBar = {
+            CustomerDetailsTopBar(onBackClick = onBackClick)
+                 },
         bottomBar = {
             CustomerDetailsBottomBar(
                 enabled = true,
@@ -88,6 +104,7 @@ fun CustomerDetailsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -139,6 +156,37 @@ fun CustomerDetailsScreen(
 
             if (state.isLoading) {
                 EventsLoadingOverlay()
+            }
+
+            if (showSuccessDialog){
+                SuccessDialog(
+                    title = "Booking confirmed",
+                    message = "Your event has been booked successfully.",
+                    onDismissRequest = {},
+                    onDoneClick = {
+                        showSuccessDialog = false
+                        navigateToEventBooking()
+                    },
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
+            }
+
+            if (showErrorDialog){
+                ErrorDialog(
+                    title = state.uiErrorTitle?:"",
+                    message = state.uiErrorMessage?:"",
+                    onRetryClick = {
+                        showErrorDialog = false
+                        viewModel.bookEvent()
+                    },
+                    onCancelClick = {
+                        showErrorDialog = false
+                    },
+                    onDismissRequest = {},
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
             }
         }
     }

@@ -72,8 +72,12 @@ dependencies {
 
     api(libs.material.icons.extended)
 
-    implementation(libs.lottie.compose)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.viewmodel.test)
+    testImplementation(libs.turbine)
 
     implementation(project(":data"))
     implementation(project(":domain"))
+    testImplementation(kotlin("test"))
 }

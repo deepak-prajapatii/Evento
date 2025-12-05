@@ -4,4 +4,5 @@ import com.evento.base.UIEvent
 
 sealed class CustomerDetailsUIEvent : UIEvent {
     object NavigateToEventBooking: CustomerDetailsUIEvent()
+    object CreateEventFailure: CustomerDetailsUIEvent()
 }
